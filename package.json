@@ -1,0 +1,48 @@
+{
+  "name": "one-way-api",
+  "version": "1.0.0",
+  "description": "API for the One Way journey planner",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "NODE_OPTIONS='--max-old-space-size=4000' ts-node src/index.ts",
+    "prepublishOnly": "tsc -p ./ --outDir dist/",
+    "test": "npm run lint && mocha --require ts-node/register 'test/**/*.spec.ts'",
+    "lint-raw": "tslint --project tsconfig.json",
+    "lint": "npm run lint-raw -- -t stylish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/planarnetwork/one-way-api.git"
+  },
+  "keywords": [
+    "gtfs",
+    "journey",
+    "planner"
+  ],
+  "author": "Linus Norton <linusnorton@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/planarnetwork/one-way-api/issues"
+  },
+  "homepage": "https://github.com/planarnetwork/one-way-api#readme",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/koa": "^2.0.48",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.18",
+    "@types/pino": "^5.8.5",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "autobind-decorator": "^2.4.0",
+    "koa": "^2.7.0",
+    "pino": "^5.11.1",
+    "pino-pretty": "^2.5.0",
+    "raptor-journey-planner": "^0.2.0"
+  }
+}
