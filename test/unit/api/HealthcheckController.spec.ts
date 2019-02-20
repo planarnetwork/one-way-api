@@ -11,7 +11,7 @@ describe("HealthcheckController", () => {
       "status": "UP"
     };
 
-    chai.expect(actual).to.deep.equal(actual);
+    chai.expect(actual).to.deep.equal(expected);
   });
 
 });

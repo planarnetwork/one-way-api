@@ -1,18 +1,13 @@
-import { KoaService } from "./api/KoaService";
 
 import * as Koa from "koa";
+import * as fs from "fs";
 import * as pino from "pino";
 import { Logger } from "pino";
+import { KoaService, Routes } from "./api/KoaService";
 import { JourneyPlanController } from "./api/JourneyPlanController";
-import {
-  Journey,
-  JourneyFactory,
-  loadGTFS,
-  RaptorDepartAfterQuery,
-  RaptorQueryFactory
-} from "raptor-journey-planner";
-import * as fs from "fs";
+import { JourneyFactory, loadGTFS, RaptorQueryFactory } from "raptor-journey-planner";
 import { HealthcheckController } from "./api/HealthcheckController";
+import { StopsController } from "./api/StopsController";
 
 /**
  * Dependency container
@@ -32,26 +27,12 @@ export class Container {
     return pino({ prettyPrint: { translateTime: true } });
   }
 
-  private async getRequestMap() {
-    const journeyPlanController = await this.getJourneyPlanController();
-    const healthcheckController = new HealthcheckController();
+  private async getRequestMap(): Promise<Routes> {
+    const gtfsPath = process.env.GTFS || "data/output.zip";
 
-    return {
-      "/jp": journeyPlanController.plan,
-      "/health": healthcheckController.healthcheck
-    };
-  }
-
-  private async getJourneyPlanController(): Promise<JourneyPlanController> {
-    const journeyPlanner = await this.getJourneyPlanner();
-
-    return new JourneyPlanController(journeyPlanner);
-  }
-
-  private async getJourneyPlanner(): Promise<RaptorDepartAfterQuery<Journey>> {
-    this.getLogger().info("Loading GTFS: " + process.env.GTFS);
-    const stream = fs.createReadStream(<string> process.env.GTFS);
-    const [trips, transfers, interchange, calendars] = await loadGTFS(stream);
+    this.getLogger().info("Loading GTFS: " + gtfsPath);
+    const stream = fs.createReadStream(<string> gtfsPath);
+    const [trips, transfers, interchange, calendars, stops] = await loadGTFS(stream);
 
     this.getLogger().info("Pre-processing");
     const raptor = RaptorQueryFactory.createDepartAfterQuery(
@@ -63,6 +44,16 @@ export class Container {
     );
 
     this.getLogger().info("Trips: " + trips.length);
-    return raptor;
+
+    const journeyPlanController = new JourneyPlanController(raptor);
+    const healthcheckController = new HealthcheckController();
+    const stopsController = new StopsController(stops);
+
+    return {
+      "/jp": journeyPlanController.plan,
+      "/health": healthcheckController.healthcheck,
+      "/stops": stopsController.getStops
+    };
   }
+
 }
