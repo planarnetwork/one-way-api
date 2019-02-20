@@ -15,11 +15,18 @@ npm install one-way-api
 
 ## Usage
 
-It can be run by specifying the GTFS dataset as CLI arguments:
+It can be run by specifying the GTFS dataset as an ENV option:
 
 ```
-npm start -- gtfs.zip
+GTFS=data/output.zip npm start
 ```
+
+or using docker:
+
+```
+./docker-run.sh
+```
+
 
 ## Contributing
 
