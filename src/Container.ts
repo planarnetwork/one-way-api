@@ -11,6 +11,7 @@ import {
   RaptorDepartAfterQuery,
   RaptorQueryFactory
 } from "raptor-journey-planner";
+import * as fs from "fs";
 
 /**
  * Dependency container
@@ -46,7 +47,8 @@ export class Container {
 
   private async getJourneyPlanner(): Promise<RaptorDepartAfterQuery<Journey>> {
     this.getLogger().info("Loading GTFS: " + process.argv[2]);
-    const [trips, transfers, interchange, calendars] = await loadGTFS(process.argv[2]);
+    const stream = fs.createReadStream(process.argv[2]);
+    const [trips, transfers, interchange, calendars] = await loadGTFS(stream);
 
     this.getLogger().info("Pre-processing");
     const raptor = RaptorQueryFactory.createDepartAfterQuery(
