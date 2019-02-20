@@ -12,6 +12,7 @@ import {
   RaptorQueryFactory
 } from "raptor-journey-planner";
 import * as fs from "fs";
+import { HealthcheckController } from "./api/HealthcheckController";
 
 /**
  * Dependency container
@@ -33,9 +34,11 @@ export class Container {
 
   private async getRequestMap() {
     const journeyPlanController = await this.getJourneyPlanController();
+    const healthcheckController = new HealthcheckController();
 
     return {
-      "/jp": journeyPlanController.plan
+      "/jp": journeyPlanController.plan,
+      "/health": healthcheckController.healthcheck
     };
   }
 
@@ -46,8 +49,8 @@ export class Container {
   }
 
   private async getJourneyPlanner(): Promise<RaptorDepartAfterQuery<Journey>> {
-    this.getLogger().info("Loading GTFS: " + process.argv[2]);
-    const stream = fs.createReadStream(process.argv[2]);
+    this.getLogger().info("Loading GTFS: " + process.env.GTFS);
+    const stream = fs.createReadStream(<string> process.env.GTFS);
     const [trips, transfers, interchange, calendars] = await loadGTFS(stream);
 
     this.getLogger().info("Pre-processing");
