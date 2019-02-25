@@ -16,11 +16,11 @@ export class JourneyPlanController {
     const origin = request.origin;
     const destination = request.destination;
     const date = new Date(request.date);
-    const departureTime = this.getTime(request.departureTime);
+    const time = this.getTime(request.time);
 
     return {
       "data": {
-        "journeys": this.raptor.plan(origin, destination, date, departureTime)
+        "journeys": this.raptor.plan(origin, destination, date, time)
       }
     };
   }
