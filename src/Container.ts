@@ -44,6 +44,9 @@ export class Container {
     );
 
     this.getLogger().info("Trips: " + trips.length);
+    const used = process.memoryUsage().heapUsed / 1024 / 1024;
+    this.getLogger().info(`Memory usage: ${Math.round(used * 100) / 100} MB`);
+
 
     const journeyPlanController = new JourneyPlanController(raptor);
     const healthcheckController = new HealthcheckController();
