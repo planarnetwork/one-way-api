@@ -3,6 +3,8 @@ import Koa = require("koa");
 import { Context } from "koa";
 import { Logger } from "pino";
 import autobind from "autobind-decorator";
+import compress = require("koa-compress");
+import cors = require("@koa/cors");
 
 /**
  * Wrapper for the Koa application
@@ -23,6 +25,8 @@ export class KoaService {
   public start(): void {
     this.koa.use(this.errorHandler);
     this.koa.use(this.requestLogger);
+    this.koa.use(cors());
+    this.koa.use(compress());
     this.koa.use(this.handler);
     this.koa.listen(this.port);
 
