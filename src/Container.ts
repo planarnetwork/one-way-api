@@ -1,11 +1,16 @@
-
 import * as Koa from "koa";
 import * as fs from "fs";
 import * as pino from "pino";
 import { Logger } from "pino";
 import { KoaService, Routes } from "./api/KoaService";
 import { JourneyPlanController } from "./api/JourneyPlanController";
-import { JourneyFactory, loadGTFS, RaptorQueryFactory } from "raptor-journey-planner";
+import {
+  GroupStationDepartAfterQuery,
+  JourneyFactory,
+  loadGTFS,
+  MultipleCriteriaFilter,
+  RaptorAlgorithmFactory
+} from "raptor-journey-planner";
 import { HealthcheckController } from "./api/HealthcheckController";
 import { StopsController } from "./api/StopsController";
 
@@ -35,20 +40,19 @@ export class Container {
     const [trips, transfers, interchange, calendars, stops] = await loadGTFS(stream);
 
     this.getLogger().info("Pre-processing");
-    const raptor = RaptorQueryFactory.createDepartAfterQuery(
+    const raptor = RaptorAlgorithmFactory.create(
       trips,
       transfers,
       interchange,
-      calendars,
-      new JourneyFactory()
+      calendars
     );
 
     this.getLogger().info("Trips: " + trips.length);
     const used = process.memoryUsage().heapUsed / 1024 / 1024;
     this.getLogger().info(`Memory usage: ${Math.round(used * 100) / 100} MB`);
 
-
-    const journeyPlanController = new JourneyPlanController(raptor);
+    const query = new GroupStationDepartAfterQuery(raptor, new JourneyFactory(), 3, [new MultipleCriteriaFilter()]);
+    const journeyPlanController = new JourneyPlanController(query);
     const healthcheckController = new HealthcheckController();
     const stopsController = new StopsController(stops);
 
