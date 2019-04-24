@@ -6,6 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "NODE_OPTIONS='--max-old-space-size=4000' ts-node src/index.ts",
+    "blacklist": "NODE_OPTIONS='--max-old-space-size=4000' ts-node src/blacklist-stops.ts",
+    "groups": "NODE_OPTIONS='--max-old-space-size=4000' ts-node src/generate-groups.ts",
     "start-js": "NODE_OPTIONS='--max-old-space-size=4000' node dist/src/index.js",
     "prepublishOnly": "rm -rf dist/; tsc -p ./ --outDir dist/",
     "test": "npm run lint && mocha --require ts-node/register 'test/**/*.spec.ts'",
@@ -38,7 +40,7 @@
     "mocha": "^6.1.4",
     "ts-node": "^8.1.0",
     "tslint": "^5.16.0",
-    "typescript": "^3.4.4"
+    "typescript": "^3.4.5"
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
@@ -46,7 +48,7 @@
     "gtfsmerge": "^1.2.4",
     "koa": "^2.7.0",
     "koa-compress": "^3.0.0",
-    "pino": "^5.12.0",
+    "pino": "^5.12.3",
     "pino-pretty": "^2.6.1",
     "raptor-journey-planner": "^2.0.1"
   }

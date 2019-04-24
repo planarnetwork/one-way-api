@@ -1,0 +1,254 @@
+[
+  {
+    "id": "1072",
+    "name": "London",
+    "members": ["EUS","MYB","STP","PAD","BFR","CTK","CST","CHX","LBG","WAE","VIC","VXH","WAT","OLD","MOG","KGX","LST","FST"],
+    "latitude": 51.512345,
+    "longitude": -0.109863
+  },
+  {
+    "id": "0410",
+    "name": "Bedford Stations",
+    "members": ["BSJ","BDM"],
+    "latitude": 52.135973,
+    "longitude": -0.466655
+  },
+  {
+    "id": "0418",
+    "name": "Birmingham",
+    "members": ["BSW","BHM","BMO"],
+    "latitude": 52.486243,
+    "longitude": -1.890401
+  },
+  {
+    "id": "1780",
+    "name": "Bootle (Merseyside)",
+    "members": ["BNW","BOT"],
+    "latitude": 53.443255,
+    "longitude": -2.998895
+  },
+  {
+    "id": "0424",
+    "name": "Bradford (West Yorkshire)",
+    "members": ["BDI","BDQ"],
+    "latitude": 53.795984,
+    "longitude": -1.759398
+  },
+  {
+    "id": "0428",
+    "name": "Canterbury",
+    "members": ["CBW","CBE"],
+    "latitude": 51.280233,
+    "longitude": 1.078909
+  },
+  {
+    "id": "0258",
+    "name": "Catford Stations",
+    "members": ["CFB","CTF"],
+    "latitude": 51.444641,
+    "longitude": -0.020106
+  },
+  {
+    "id": "0254",
+    "name": "Colchester Stations",
+    "members": ["CET","COL"],
+    "latitude": 51.895927,
+    "longitude": 0.891874
+  },
+  {
+    "id": "0449",
+    "name": "Croydon",
+    "members": ["ECR","WCY"],
+    "latitude": 51.376165,
+    "longitude": -0.098234
+  },
+  {
+    "id": "0429",
+    "name": "Dorchester",
+    "members": ["DCH","DCW"],
+    "latitude": 50.711164,
+    "longitude": -2.441181
+  },
+  {
+    "id": "0416",
+    "name": "Dorking Stations",
+    "members": ["DKT","DKG","DPD"],
+    "latitude": 51.232202,
+    "longitude": -0.332378
+  },
+  {
+    "id": "0259",
+    "name": "Edenbridge Stations",
+    "members": ["EBT","EBR"],
+    "latitude": 51.196259,
+    "longitude": 0.065451
+  },
+  {
+    "id": "0263",
+    "name": "Enfield",
+    "members": ["ENC","ENF"],
+    "latitude": 51.652299,
+    "longitude": -0.080712
+  },
+  {
+    "id": "0431",
+    "name": "Falkirk",
+    "members": ["FKG","FKK"],
+    "latitude": 56.001878,
+    "longitude": -3.783913
+  },
+  {
+    "id": "0260",
+    "name": "Farnborough",
+    "members": ["FNB","FNN"],
+    "latitude": 51.0000,
+    "longitude": 0.0000
+  },
+  {
+    "id": "0432",
+    "name": "Folkestone",
+    "members": ["FKW","FKC"],
+    "latitude": 51.286894,
+    "longitude": -0.752615
+  },
+  {
+    "id": "0433",
+    "name": "Glasgow",
+    "members": ["GLC","GLQ"],
+    "latitude": 55.864237,
+    "longitude": -4.251806
+  },
+  {
+    "id": "0404",
+    "name": "Helensburgh",
+    "members": ["HLC","HLU"],
+    "latitude": 56.002318,
+    "longitude": -4.734014
+  },
+  {
+    "id": "0413",
+    "name": "Hertford",
+    "members": ["HFN","HFE"],
+    "latitude": 51.795756,
+    "longitude": -0.081157
+  },
+  {
+    "id": "0435",
+    "name": "Liverpool",
+    "members": ["MRF","LVC","LVJ","LIV"],
+    "latitude": 53.408371,
+    "longitude": -2.991573
+  },
+  {
+    "id": "0437",
+    "name": "Maidstone",
+    "members": ["MDE","MDW","MDB"],
+    "latitude": 51.270363,
+    "longitude": 0.522699
+  },
+  {
+    "id": "0438",
+    "name": "Manchester",
+    "members": ["DGT","MCO","MAN","MCV"],
+    "latitude": 53.480759,
+    "longitude": -2.242631
+  },
+  {
+    "id": "0441",
+    "name": "Newark",
+    "members": ["NCT","NNG"],
+    "latitude": 53.070039,
+    "longitude": -0.806570
+  },
+  {
+    "id": "0262",
+    "name": "Penge",
+    "members": ["PNE","PNW"],
+    "latitude": 51.413876,
+    "longitude": -0.051703
+  },
+  {
+    "id": "0268",
+    "name": "Pontefract",
+    "members": ["PFR","PFM"],
+    "latitude": 53.691688,
+    "longitude": -1.308648
+  },
+  {
+    "id": "0440",
+    "name": "Portsmouth",
+    "members": ["PMS","PMH"],
+    "latitude": 50.819767,
+    "longitude": -1.087977
+  },
+  {
+    "id": "0403",
+    "name": "Reading Stations",
+    "members": ["RDG","RDW"],
+    "latitude": 51.454265,
+    "longitude": -0.978130
+  },
+  {
+    "id": "0411",
+    "name": "Southend",
+    "members": ["SOV","SOC"],
+    "latitude": 51.545927,
+    "longitude": 0.707712
+  },
+  {
+    "id": "0271",
+    "name": "Thorne",
+    "members": ["TNN","TNS"],
+    "latitude": 53.610421,
+    "longitude": -0.961440
+  },
+  {
+    "id": "7468",
+    "name": "Tilbury",
+    "members": ["TBR","TIL"],
+    "latitude": 51.463024,
+    "longitude": 0.360498
+  },
+  {
+    "id": "0443",
+    "name": "Tyndrum",
+    "members": ["TYL","UTY"],
+    "latitude": 56.436070,
+    "longitude": -4.711762
+  },
+  {
+    "id": "0265",
+    "name": "West Hampstead",
+    "members": ["WHD","WHP"],
+    "latitude": 51.547358,
+    "longitude": -0.190436
+  },
+  {
+    "id": "0444",
+    "name": "Wakefield",
+    "members": ["WKK","WKF"],
+    "latitude": 53.683298,
+    "longitude": -1.505924
+  },
+  {
+    "id": "0445",
+    "name": "Warrington",
+    "members": ["WBQ","WAC"],
+    "latitude": 53.390044,
+    "longitude": -2.596950
+  },
+  {
+    "id": "0446",
+    "name": "Wigan",
+    "members": ["WGN","WGW"],
+    "latitude": 53.545065,
+    "longitude": -2.632507
+  },
+  {
+    "id": "0447",
+    "name": "Worcester",
+    "members": ["WOS","WOF"],
+    "latitude": 52.193636,
+    "longitude": -2.221575
+  }
+]

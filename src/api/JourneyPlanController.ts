@@ -1,12 +1,19 @@
 import autobind from "autobind-decorator";
-import { Journey, GroupStationDepartAfterQuery } from "raptor-journey-planner";
+import { Journey, GroupStationDepartAfterQuery, StopID } from "raptor-journey-planner";
 import { RequestParams } from "./KoaService";
+import * as groupData from "../../data/groups.json";
 
 /**
  * Handles journey planning requests.
  */
 @autobind
 export class JourneyPlanController {
+
+  private readonly groupIndex = groupData.reduce((index, group) => {
+    index[group.id] = group.members;
+
+    return index;
+  }, {});
 
   constructor(
     private readonly raptor: GroupStationDepartAfterQuery
@@ -17,7 +24,9 @@ export class JourneyPlanController {
     const destination = request.destination;
     const date = new Date(request.date);
     const time = this.getTime(request.time);
-    const results = this.raptor.plan([origin], [destination], date, time);
+    const origins = this.getStops(origin);
+    const destinations = this.getStops(destination);
+    const results = this.raptor.plan(origins, destinations, date, time);
 
     return {
       "data": {
@@ -31,6 +40,10 @@ export class JourneyPlanController {
     const minutes = time.substr(2);
 
     return Number(hours) * 3600 + Number(minutes) * 60;
+  }
+
+  private getStops(stop: StopID): StopID[] {
+    return this.groupIndex[stop] || [stop];
   }
 
 }

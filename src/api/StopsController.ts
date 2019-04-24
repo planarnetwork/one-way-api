@@ -1,4 +1,4 @@
-import { Stop, StopIndex } from "raptor-journey-planner";
+import { Stop, StopID } from "raptor-journey-planner";
 import autobind from "autobind-decorator";
 
 /**
@@ -8,15 +8,28 @@ import autobind from "autobind-decorator";
 export class StopsController {
 
   constructor(
-    private readonly stops: StopIndex
+    private readonly stops: Stop[],
+    private readonly groups: StopGroup[],
+    private readonly blacklist: Record<StopID, boolean>
   ) {}
 
   /**
    * Return all the stops
    */
   public getStops(): StopsResponse {
+    const groups = this.groups.map(group => ({
+      ...group,
+      code: "",
+      description: "",
+      timezone: "",
+    }));
+
+    const stops = this.stops
+      .concat(groups)
+      .filter(stop => !this.blacklist[stop.id]);
+
     return {
-      "data": Object.values(this.stops)
+      "data": stops
     };
   }
 
@@ -24,4 +37,11 @@ export class StopsController {
 
 export interface StopsResponse {
   "data": Stop[]
+}
+
+export interface StopGroup {
+  id: string,
+  name: string,
+  latitude: number,
+  longitude: number
 }

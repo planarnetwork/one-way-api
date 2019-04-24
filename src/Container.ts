@@ -1,6 +1,8 @@
 import * as Koa from "koa";
 import * as fs from "fs";
-import * as pino from "pino";
+import pino = require("pino");
+import * as groups from "../data/groups.json";
+import * as blacklist from "../data/stop-blacklist.json";
 import { Logger } from "pino";
 import { KoaService, Routes } from "./api/KoaService";
 import { JourneyPlanController } from "./api/JourneyPlanController";
@@ -28,8 +30,11 @@ export class Container {
     );
   }
 
-  private getLogger(): Logger {
-    return pino({ prettyPrint: { translateTime: true } });
+  private getLogger() {
+    // return pino({ prettyPrint: { translateTime: true } });
+    return {
+      info: (message: any) => console.log("[" + new Date().toISOString() + "] " + message)
+    };
   }
 
   private async getRequestMap(): Promise<Routes> {
@@ -54,7 +59,11 @@ export class Container {
     const query = new GroupStationDepartAfterQuery(raptor, new JourneyFactory(), 3, [new MultipleCriteriaFilter()]);
     const journeyPlanController = new JourneyPlanController(query);
     const healthcheckController = new HealthcheckController();
-    const stopsController = new StopsController(stops);
+    const stopsController = new StopsController(
+      Object.values(stops),
+      groups,
+      blacklist
+    );
 
     return {
       "/jp": journeyPlanController.plan,

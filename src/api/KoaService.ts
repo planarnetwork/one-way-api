@@ -16,7 +16,7 @@ export class KoaService {
     private readonly routes: Routes,
     private readonly koa: Koa,
     private readonly port: number,
-    private readonly logger: Logger
+    private readonly logger: any
   ) {}
 
   /**
