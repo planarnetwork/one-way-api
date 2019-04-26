@@ -15,6 +15,7 @@ import {
 } from "raptor-journey-planner";
 import { HealthcheckController } from "./api/HealthcheckController";
 import { StopsController } from "./api/StopsController";
+import { GroupsController } from "./api/GroupsController";
 
 /**
  * Dependency container
@@ -59,15 +60,13 @@ export class Container {
     const query = new GroupStationDepartAfterQuery(raptor, new JourneyFactory(), 3, [new MultipleCriteriaFilter()]);
     const journeyPlanController = new JourneyPlanController(query);
     const healthcheckController = new HealthcheckController();
-    const stopsController = new StopsController(
-      Object.values(stops),
-      groups,
-      blacklist
-    );
+    const groupsController = new GroupsController(groups);
+    const stopsController = new StopsController(Object.values(stops), blacklist);
 
     return {
       "/jp": journeyPlanController.plan,
       "/health": healthcheckController.healthcheck,
+      "/groups": groupsController.getGroups,
       "/stops": stopsController.getStops
     };
   }

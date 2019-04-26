@@ -31,6 +31,7 @@
   "homepage": "https://github.com/planarnetwork/one-way-api#readme",
   "devDependencies": {
     "@types/chai": "^4.1.7",
+    "@types/csv-parse": "^1.1.12",
     "@types/koa": "^2.0.48",
     "@types/koa-compress": "^2.0.9",
     "@types/mocha": "^5.2.6",
@@ -45,11 +46,14 @@
   "dependencies": {
     "@koa/cors": "^3.0.0",
     "autobind-decorator": "^2.4.0",
-    "gtfsmerge": "^1.2.4",
+    "cheap-ruler": "^2.5.1",
+    "csv-parse": "^4.4.1",
+    "gtfsmerge": "^1.2.6",
     "koa": "^2.7.0",
     "koa-compress": "^3.0.0",
     "pino": "^5.12.3",
     "pino-pretty": "^2.6.1",
-    "raptor-journey-planner": "^2.0.1"
+    "raptor-journey-planner": "^2.0.1",
+    "unzipper": "^0.9.11"
   }
 }

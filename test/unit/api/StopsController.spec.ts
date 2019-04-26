@@ -34,7 +34,7 @@ describe("StopsController", () => {
         "timezone": "Europe/London"
       },
     };
-    const controller = new StopsController(Object.values(stops), [], { });
+    const controller = new StopsController(Object.values(stops), { });
     const actual = controller.getStops();
     const expected = {
       "data": Object.values(stops)
@@ -73,7 +73,7 @@ describe("StopsController", () => {
         "timezone": "Europe/London"
       },
     };
-    const controller = new StopsController(Object.values(stops), [], { "B": true });
+    const controller = new StopsController(Object.values(stops), { "B": true });
     const actual = controller.getStops();
     const expected = {
       "data": [stops.A, stops.C]

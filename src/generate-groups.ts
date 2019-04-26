@@ -1,43 +1,75 @@
 import { loadGTFS, Stop, StopID } from "raptor-journey-planner";
 import * as fs from "fs";
 import { promisify } from "util";
+import * as parse from "csv-parse";
+import { Parser } from "csv-parse";
+import * as unzipper from "unzipper";
+import * as cheapRuler from "cheap-ruler";
+import * as blacklist from "../data/stop-blacklist.json";
 
-const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const ruler = cheapRuler(46);
 
 async function run(): Promise<void> {
-  const [gtfs, be, de, es, fr, gb] = await Promise.all([
+  const [gtfs, cities] = await Promise.all([
     loadGTFS(fs.createReadStream("./data/output.zip")),
-    readFile(__dirname + "/../data/be.json", "utf8"),
-    readFile(__dirname + "/../data/de.json", "utf8"),
-    readFile(__dirname + "/../data/es.json", "utf8"),
-    readFile(__dirname + "/../data/fr.json", "utf8"),
-    readFile(__dirname + "/../data/gb.json", "utf8")
+    getCities(
+      fs.createReadStream("./data/stops.csv.zip")
+        .pipe(unzipper.ParseOne())
+        .pipe(parse())
+    )
   ]);
 
-  const stops = Object.values(gtfs[4]);
-  const groups = JSON.parse(be)
-    .concat(JSON.parse(de))
-    .concat(JSON.parse(fr))
-    .concat(JSON.parse(es))
-    .filter(s => parseInt(s.population_proper, 10) > 0)
+  const stops = Object.values(gtfs[4]).filter(s => !blacklist[s.id]);
+  const groups = cities
     .map(s => ({
-      id: s.city.toLocaleLowerCase() + "_" + s.population_proper,
-      name: s.city,
-      description: "",
-      latitude: Number(s.lat),
-      longitude: Number(s.lng),
-      members: getMembers(Number(s.lat), Number(s.lng), stops)
+      population: undefined,
+      members: getMembers(s.latitude, s.longitude, stops, s.population),
+      ...s,
     }))
-    .filter(s => s.members.length > 0)
-    .concat(JSON.parse(gb));
+    .filter(s => s.members.length > 0);
 
   await writeFile(__dirname + "/../data/groups.json", JSON.stringify(groups, null, 2));
 }
 
-function getMembers(latA: number, lngA: number, stops: Stop[]): StopID[] {
+function getCities(input: Parser): Promise<StopWithPopulation[]> {
+  return new Promise((resolve, reject) => {
+    const cities: StopWithPopulation[] = [];
+    const acceptedCountries = ["GB", "DE", "ES", "FR", "BE", "NL", "SE", "CH", "CZ", "IT", "AT", "PL", "LT", "DK"];
+
+    input.on("end", () => resolve(cities));
+    input.on("error", reject);
+    input.on("data", city => {
+      const [id, asciiName, utf8name, lat, lng, country, population, timezone] = city;
+
+      if (acceptedCountries.includes(country)) {
+        cities.push({
+          id: id + "_" + asciiName.toLowerCase().replace(" ", "_"),
+          name: asciiName,
+          description: utf8name,
+          code: id,
+          latitude: Number(lat),
+          longitude: Number(lng),
+          timezone: timezone,
+          population: +population
+        });
+      }
+    });
+  });
+}
+
+interface StopWithPopulation extends Stop { population: number }
+
+function getMembers(latA: number, lngA: number, stops: Stop[], population: number): StopID[] {
+  let maxDistance = 5;
+
+  if (population < 1000000) maxDistance = 4;
+  if (population < 100000) maxDistance = 3;
+  if (population < 10000) maxDistance = 2;
+  if (population < 1000) maxDistance = 1;
+
   return stops
-    .filter(s => Math.abs(s.latitude - latA) + Math.abs(s.longitude - lngA) < 0.07)
+    .filter(s => ruler.distance([latA, lngA], [s.latitude, s.longitude]) < maxDistance)
     .map(s => s.id);
 }
 
