@@ -12,7 +12,7 @@ export class GroupRepository {
   constructor(
     private readonly ruler: CheapRuler,
     private readonly acceptedCountries: CountryCode[] = [
-      "GB", "DE", "ES", "FR", "BE", "NL", "SE", "CH", "CZ", "IT", "AT", "PL", "LT", "DK", "LX"
+      "GB", "DE", "ES", "FR", "BE", "NL", "SE", "CH", "CZ", "IT", "AT", "PL", "LT", "DK", "LU"
     ]
   ) {}
 

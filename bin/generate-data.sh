@@ -6,7 +6,7 @@ wget -P -N https://data.sncf.com/explore/dataset/sncf-ter-gtfs/files/24e02fa9694
 wget -P -N https://gtfs.irail.be/nmbs/gtfs/gtfs-nmbs-2019-03-12.zip -O /tmp/be-intercity-rail.zip
 wget -P -N https://s3.eu-west-2.amazonaws.com/feeds.planar.network/eurostar.zip -O /tmp/eurostar.zip
 wget -P -N http://data.ndovloket.nl/flixbus/flixbus-eu.zip -O /tmp/eu-flix-bus.zip
-wget -P -N https://transitfeeds.com/p/openov/621/latest/download -O /tmp/lx-intercity-rail.zip
+wget -P -N https://transitfeeds.com/p/openov/621/latest/download -O /tmp/lu-intercity-rail.zip
 wget -P -N https://api.idbus.com/gtfs.zip -O /tmp/eu-oui-bus.zip
 
 # Renfe, infrequent updates?
@@ -33,7 +33,7 @@ wget -P -N https://api.idbus.com/gtfs.zip -O /tmp/eu-oui-bus.zip
   /tmp/gb-rail.zip \
   /tmp/gb-coach.zip \
   /tmp/be-intercity-rail.zip \
-  /tmp/lx-intercity-rail.zip \
+  /tmp/lu-intercity-rail.zip \
   /tmp/eu-flix-bus.zip \
   /tmp/eu-oui-bus-modified.zip \
   /tmp/fr-all.zip \
