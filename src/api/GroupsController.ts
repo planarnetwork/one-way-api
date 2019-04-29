@@ -1,5 +1,6 @@
-import { Stop, StopID } from "raptor-journey-planner";
+import { Stop } from "raptor-journey-planner";
 import autobind from "autobind-decorator";
+import { GroupStop } from "../stop/GroupRepository";
 
 /**
  * Return the groups that are available for use
@@ -8,7 +9,7 @@ import autobind from "autobind-decorator";
 export class GroupsController {
 
   constructor(
-    private readonly groups: Stop[]
+    private readonly groups: GroupStop[]
   ) {}
 
   /**

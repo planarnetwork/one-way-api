@@ -8,8 +8,7 @@ import autobind from "autobind-decorator";
 export class StopsController {
 
   constructor(
-    private readonly stops: Stop[],
-    private readonly blacklist: Record<StopID, boolean>
+    private readonly stops: Stop[]
   ) {}
 
   /**
@@ -17,7 +16,7 @@ export class StopsController {
    */
   public getStops(): StopsResponse {
     return {
-      "data": this.stops.filter(stop => !this.blacklist[stop.id])
+      "data": this.stops
     };
   }
 

@@ -1,8 +1,6 @@
 import * as Koa from "koa";
 import * as fs from "fs";
 import pino = require("pino");
-import * as groups from "../data/groups.json";
-import * as blacklist from "../data/stop-blacklist.json";
 import { Logger } from "pino";
 import { KoaService, Routes } from "./api/KoaService";
 import { JourneyPlanController } from "./api/JourneyPlanController";
@@ -11,11 +9,13 @@ import {
   JourneyFactory,
   loadGTFS,
   MultipleCriteriaFilter,
-  RaptorAlgorithmFactory
+  RaptorAlgorithmFactory, StopIndex
 } from "raptor-journey-planner";
 import { HealthcheckController } from "./api/HealthcheckController";
 import { StopsController } from "./api/StopsController";
 import { GroupsController } from "./api/GroupsController";
+import { GroupRepository, GroupStop } from "./stop/GroupRepository";
+import * as cheapRuler from "cheap-ruler";
 
 /**
  * Dependency container
@@ -44,24 +44,22 @@ export class Container {
     this.getLogger().info("Loading GTFS: " + gtfsPath);
     const stream = fs.createReadStream(<string> gtfsPath);
     const [trips, transfers, interchange, calendars, stops] = await loadGTFS(stream);
+    const filteredTrips = trips.filter(t => t.stopTimes && t.stopTimes.length > 0);
+    const groupsPromise = this.getGroups(stops);
+    this.getLogger().info("Trips: " + filteredTrips.length);
 
     this.getLogger().info("Pre-processing");
-    const raptor = RaptorAlgorithmFactory.create(
-      trips,
-      transfers,
-      interchange,
-      calendars
-    );
+    const raptor = RaptorAlgorithmFactory.create(filteredTrips, transfers, interchange, calendars );
 
-    this.getLogger().info("Trips: " + trips.length);
-    const used = process.memoryUsage().heapUsed / 1024 / 1024;
-    this.getLogger().info(`Memory usage: ${Math.round(used * 100) / 100} MB`);
+    this.getLogger().info("Loading groups");
+    const groups = await groupsPromise;
+    this.getLogger().info("Groups: " + groups.length);
 
-    const query = new GroupStationDepartAfterQuery(raptor, new JourneyFactory(), 3, [new MultipleCriteriaFilter()]);
-    const journeyPlanController = new JourneyPlanController(query);
+    const query = new GroupStationDepartAfterQuery(raptor, new JourneyFactory(), 2, [new MultipleCriteriaFilter()]);
+    const journeyPlanController = new JourneyPlanController(query, groups);
     const healthcheckController = new HealthcheckController();
     const groupsController = new GroupsController(groups);
-    const stopsController = new StopsController(Object.values(stops), blacklist);
+    const stopsController = new StopsController(Object.values(stops));
 
     return {
       "/jp": journeyPlanController.plan,
@@ -69,6 +67,12 @@ export class Container {
       "/groups": groupsController.getGroups,
       "/stops": stopsController.getStops
     };
+  }
+
+  private getGroups(stops: StopIndex): Promise<GroupStop[]> {
+    const repository = new GroupRepository(cheapRuler(46));
+
+    return repository.getGroups("data/locations.csv.zip", Object.values(stops));
   }
 
 }

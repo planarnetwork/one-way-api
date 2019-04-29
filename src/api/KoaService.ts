@@ -30,6 +30,8 @@ export class KoaService {
     this.koa.use(this.handler);
     this.koa.listen(this.port);
 
+    const used = process.memoryUsage().heapUsed / 1024 / 1024;
+    this.logger.info(`Memory usage: ${Math.round(used * 100) / 100} MB`);
     this.logger.info(`Started on ${this.port}`);
   }
 

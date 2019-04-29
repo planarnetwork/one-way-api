@@ -1,23 +1,23 @@
 import autobind from "autobind-decorator";
 import { Journey, GroupStationDepartAfterQuery, StopID } from "raptor-journey-planner";
 import { RequestParams } from "./KoaService";
-import * as groupData from "../../data/groups.json";
+import { GroupStop } from "../stop/GroupRepository";
 
 /**
  * Handles journey planning requests.
  */
 @autobind
 export class JourneyPlanController {
-
-  private readonly groupIndex = groupData.reduce((index, group) => {
-    index[group.id] = group.members;
-
-    return index;
-  }, {});
+  private readonly groupIndex = {};
 
   constructor(
-    private readonly raptor: GroupStationDepartAfterQuery
-  ) {}
+    private readonly raptor: GroupStationDepartAfterQuery,
+    private readonly groups: GroupStop[]
+  ) {
+    for (const group of groups) {
+      this.groupIndex[group.id] = group.members;
+    }
+  }
 
   public plan(request: RequestParams): JourneyPlanResponse {
     const origin = request.origin;
@@ -53,3 +53,5 @@ export interface JourneyPlanResponse {
     "journeys": Journey[]
   }
 }
+
+export type GroupIndex = Record<StopID, StopID[]>;
