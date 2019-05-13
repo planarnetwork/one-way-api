@@ -2,20 +2,22 @@ import * as Koa from "koa";
 import * as fs from "fs";
 import pino = require("pino");
 import { Logger } from "pino";
-import { KoaService, Routes } from "./api/KoaService";
-import { JourneyPlanController } from "./api/JourneyPlanController";
+import { KoaService, Routes } from "./KoaService";
+import { JourneyPlanController } from "../planning/api/JourneyPlanController";
 import {
   GroupStationDepartAfterQuery,
   JourneyFactory,
   loadGTFS,
   MultipleCriteriaFilter,
-  RaptorAlgorithmFactory, StopIndex
+  RaptorAlgorithmFactory, Stop, StopIndex, Trip
 } from "raptor-journey-planner";
-import { HealthcheckController } from "./api/HealthcheckController";
-import { StopsController } from "./api/StopsController";
-import { GroupsController } from "./api/GroupsController";
-import { GroupRepository, GroupStop } from "./stop/GroupRepository";
+import { HealthcheckController } from "./HealthcheckController";
+import { StopsController } from "../stop/api/StopsController";
+import { GroupsController } from "../group/api/GroupsController";
+import { GroupRepository, GroupStop } from "../group/repository/GroupRepository";
 import * as cheapRuler from "cheap-ruler";
+import { Router } from "./Router";
+import { StopFilter } from "../stop/filter/StopFilter";
 
 /**
  * Dependency container
@@ -23,8 +25,10 @@ import * as cheapRuler from "cheap-ruler";
 export class Container {
 
   public async getKoaService(): Promise<KoaService> {
+    const router = await this.getRequestMap();
+
     return new KoaService(
-      await this.getRequestMap(),
+      router.getRoutes(),
       new Koa(),
       Number(process.env.PORT) || 8080,
       this.getLogger()
@@ -38,18 +42,19 @@ export class Container {
     };
   }
 
-  private async getRequestMap(): Promise<Routes> {
+  private async getRequestMap(): Promise<Router> {
     const gtfsPath = process.env.GTFS || "data/output.zip";
 
     this.getLogger().info("Loading GTFS: " + gtfsPath);
     const stream = fs.createReadStream(<string> gtfsPath);
     const [trips, transfers, interchange, calendars, stops] = await loadGTFS(stream);
     const filteredTrips = trips.filter(t => t.stopTimes && t.stopTimes.length > 0);
-    const groupsPromise = this.getGroups(stops);
+    const filteredStops = this.getStopFilter(filteredTrips).getValidStops(Object.values(stops));
+    const groupsPromise = this.getGroups(filteredStops);
     this.getLogger().info("Trips: " + filteredTrips.length);
 
     this.getLogger().info("Pre-processing");
-    const raptor = RaptorAlgorithmFactory.create(filteredTrips, transfers, interchange, calendars );
+    const raptor = RaptorAlgorithmFactory.create(filteredTrips, transfers, interchange, calendars);
 
     this.getLogger().info("Loading groups");
     const groups = await groupsPromise;
@@ -59,20 +64,23 @@ export class Container {
     const journeyPlanController = new JourneyPlanController(query, groups);
     const healthcheckController = new HealthcheckController();
     const groupsController = new GroupsController(groups);
-    const stopsController = new StopsController(Object.values(stops));
+    const stopsController = new StopsController(filteredStops);
 
-    return {
-      "/jp": journeyPlanController.plan,
-      "/health": healthcheckController.healthcheck,
-      "/groups": groupsController.getGroups,
-      "/stops": stopsController.getStops
-    };
+    return new Router(
+      healthcheckController,
+      stopsController,
+      groupsController,
+      journeyPlanController
+    );
   }
 
-  private getGroups(stops: StopIndex): Promise<GroupStop[]> {
+  private getGroups(stops: Stop[]): Promise<GroupStop[]> {
     const repository = new GroupRepository(cheapRuler(46));
 
-    return repository.getGroups("data/locations.csv.zip", Object.values(stops));
+    return repository.getGroups("data/locations.csv.zip", stops);
   }
 
+  private getStopFilter(trips: Trip[]): StopFilter {
+    return new StopFilter(trips);
+  }
 }

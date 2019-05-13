@@ -1,4 +1,4 @@
-import { Container } from "./Container";
+import { Container } from "./kernel/Container";
 
 const container = new Container();
 

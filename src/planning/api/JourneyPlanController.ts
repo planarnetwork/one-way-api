@@ -1,7 +1,7 @@
 import autobind from "autobind-decorator";
 import { Journey, GroupStationDepartAfterQuery, StopID } from "raptor-journey-planner";
-import { RequestParams } from "./KoaService";
-import { GroupStop } from "../stop/GroupRepository";
+import { RequestParams } from "../../kernel/KoaService";
+import { GroupStop } from "../../group/repository/GroupRepository";
 
 /**
  * Handles journey planning requests.
@@ -54,4 +54,3 @@ export interface JourneyPlanResponse {
   }
 }
 
-export type GroupIndex = Record<StopID, StopID[]>;

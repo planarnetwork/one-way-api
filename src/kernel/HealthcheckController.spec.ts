@@ -1,6 +1,6 @@
 
 import * as chai from "chai";
-import { HealthcheckController } from "../../../src/api/HealthcheckController";
+import { HealthcheckController } from "./HealthcheckController";
 
 describe("HealthcheckController", () => {
 

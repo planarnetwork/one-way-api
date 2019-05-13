@@ -1,8 +1,8 @@
 
 import * as chai from "chai";
-import { StopsController } from "../../../src/api/StopsController";
+import { GroupsController } from "./GroupsController";
 
-describe("StopsController", () => {
+describe("GroupsController", () => {
 
   it("returns stops", () => {
     const stops = {
@@ -13,7 +13,8 @@ describe("StopsController", () => {
         "description": "ADescription",
         "latitude": 1.0,
         "longitude": 1.0,
-        "timezone": "Europe/London"
+        "timezone": "Europe/London",
+        "members": []
       },
       "B": {
         "id": "B",
@@ -22,7 +23,8 @@ describe("StopsController", () => {
         "description": "BDescription",
         "latitude": 1.0,
         "longitude": 1.0,
-        "timezone": "Europe/London"
+        "timezone": "Europe/London",
+        "members": []
       },
       "C": {
         "id": "C",
@@ -31,11 +33,12 @@ describe("StopsController", () => {
         "description": "CDescription",
         "latitude": 1.0,
         "longitude": 1.0,
-        "timezone": "Europe/London"
+        "timezone": "Europe/London",
+        "members": []
       },
     };
-    const controller = new StopsController(Object.values(stops));
-    const actual = controller.getStops();
+    const controller = new GroupsController(Object.values(stops));
+    const actual = controller.getGroups();
     const expected = {
       "data": Object.values(stops)
     };

@@ -1,6 +1,6 @@
 import { Stop } from "raptor-journey-planner";
 import autobind from "autobind-decorator";
-import { GroupStop } from "../stop/GroupRepository";
+import { GroupStop } from "../repository/GroupRepository";
 
 /**
  * Return the groups that are available for use
