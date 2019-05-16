@@ -7,7 +7,6 @@ wget -P -N https://s3.eu-west-2.amazonaws.com/feeds.planar.network/eurostar.zip 
 wget -P -N https://gtfs.irail.be/nmbs/gtfs/gtfs-nmbs-2019-03-12.zip -O /tmp/be-intercity-rail.zip
 wget -P -N https://transitfeeds.com/p/openov/621/latest/download -O /tmp/lu-intercity-rail.zip
 wget -P -N https://transitfeeds.com/p/renfe/1018/latest/download -O /tmp/es-intercity-rail.zip
-wget -P -N https://transitfeeds.com/p/renfe/1016/latest/download -O /tmp/es-catelonia-all.zip
 wget -P -N http://data.ndovloket.nl/flixbus/flixbus-eu.zip -O /tmp/eu-flix-bus.zip
 wget -P -N https://api.idbus.com/gtfs.zip -O /tmp/eu-oui-bus.zip
 wget -P -N https://github.com/fredlockheed/db-fv-gtfs/releases/download/2019.0.0/2019.zip -O /tmp/de-intercity-rail.zip
@@ -22,6 +21,9 @@ wget -P -N https://gtfs.geops.ch/dl/gtfs_train.zip -O /tmp/ch-rail.zip
 # No connecting ferries
 # wget -P -N https://transitfeeds.com/p/irish-rail/1046/latest/download -O /tmp/ie-intercity-rail.zip
 
+# Not updated
+# wget -P -N https://transitfeeds.com/p/renfe/1016/latest/download -O /tmp/es-catelonia-all.zip
+
 ./node_modules/.bin/gtfsmerge --transfer-distance=0.06 /tmp/fr-ter-rail.zip /tmp/fr-intercity-rail.zip /tmp/eurostar.zip /tmp/fr-all.zip
 ./node_modules/.bin/gtfsmerge --stop-prefix=oui_ /tmp/eu-oui-bus.zip /tmp/eu-oui-bus-modified.zip
 ./node_modules/.bin/gtfsmerge \
@@ -32,7 +34,6 @@ wget -P -N https://gtfs.geops.ch/dl/gtfs_train.zip -O /tmp/ch-rail.zip
   /tmp/eu-flix-bus.zip \
   /tmp/eu-oui-bus-modified.zip \
   /tmp/es-intercity-rail.zip \
-  /tmp/es-catelonia-all.zip \
   /tmp/de-intercity-rail.zip \
   /tmp/ch-rail.zip \
   /tmp/fr-all.zip \
