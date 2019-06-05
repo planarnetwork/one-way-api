@@ -14,10 +14,12 @@ wget -P -N https://api.idbus.com/gtfs.zip -O /tmp/eu-oui-bus.zip
 wget -P -N https://github.com/fredlockheed/db-fv-gtfs/releases/download/2019.0.0/2019.zip -O /tmp/oneway/de-intercity-rail.zip
 wget -P -N https://gtfs.geops.ch/dl/gtfs_train.zip -O /tmp/oneway/ch-rail.zip
 wget -P -N https://transitfeeds.com/p/trafiklab/50/latest/download -O /tmp/oneway/se-all.zip
-wget -P -N https://transitfeeds.com/p/entur/970/latest/download -O /tmp/oneway/no-all.zip
-wget -P -N https://transitfeeds.com/p/ministry-of-transport-and-communications/921/latest/download -O /tmp/oneway/fi-all.zip
+wget -P -N https://transitfeeds.com/p/ministry-of-transport-and-communications/921/latest/download -O /tmp/fi-all.zip
 wget -P -N https://transitfeeds.com/p/rejseplanen/705/latest/download -O /tmp/oneway/dk-all.zip
 wget -P -N https://transitfeeds.com/p/maanteeamet/510/latest/download -O /tmp/oneway/ee-all.zip
+
+# Lots of data but doesn't seem to work
+# wget -P -N https://transitfeeds.com/p/entur/970/latest/download -O /tmp/oneway/no-all.zip
 
 # DB, lots of data but only covers a small area?
 # wget -P -N https://data.opendatasoft.com/explore/dataset/de@navitia/files/400d7da94eaacb5e52c612f8ac28e420/download/ -O /tmp/de-rail.zip
@@ -33,4 +35,5 @@ wget -P -N https://transitfeeds.com/p/maanteeamet/510/latest/download -O /tmp/on
 
 ./node_modules/.bin/gtfsmerge --transfer-distance=3.5 /tmp/fr-ter-rail.zip /tmp/fr-intercity-rail.zip /tmp/eurostar.zip /tmp/oneway/fr-all.zip
 ./node_modules/.bin/gtfsmerge --stop-prefix=oui_ /tmp/eu-oui-bus.zip /tmp/oneway/eu-oui-bus-modified.zip
+./node_modules/.bin/gtfsmerge --stop-prefix=fi_ /tmp/fi-all.zip /tmp/oneway/fi-all.zip
 ./node_modules/.bin/gtfsmerge /tmp/oneway/*.zip ./data/output.zip
