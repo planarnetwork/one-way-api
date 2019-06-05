@@ -17,6 +17,7 @@ wget -P -N https://transitfeeds.com/p/trafiklab/50/latest/download -O /tmp/onewa
 wget -P -N https://transitfeeds.com/p/ministry-of-transport-and-communications/921/latest/download -O /tmp/fi-all.zip
 wget -P -N https://transitfeeds.com/p/rejseplanen/705/latest/download -O /tmp/oneway/dk-all.zip
 wget -P -N https://transitfeeds.com/p/maanteeamet/510/latest/download -O /tmp/oneway/ee-all.zip
+wget -P -N http://gtfs.ovapi.nl/nl/gtfs-nl.zip -O /tmp/nl-all.zip
 
 # Lots of data but doesn't seem to work
 # wget -P -N https://transitfeeds.com/p/entur/970/latest/download -O /tmp/oneway/no-all.zip
@@ -24,8 +25,6 @@ wget -P -N https://transitfeeds.com/p/maanteeamet/510/latest/download -O /tmp/on
 # DB, lots of data but only covers a small area?
 # wget -P -N https://data.opendatasoft.com/explore/dataset/de@navitia/files/400d7da94eaacb5e52c612f8ac28e420/download/ -O /tmp/de-rail.zip
 
-# NL, Too much data?
-# wget -P -N http://gtfs.ovapi.nl/nl/gtfs-nl.zip -O /tmp/nl-all.zip
 
 # No connecting ferries
 # wget -P -N https://transitfeeds.com/p/irish-rail/1046/latest/download -O /tmp/ie-intercity-rail.zip
@@ -33,7 +32,8 @@ wget -P -N https://transitfeeds.com/p/maanteeamet/510/latest/download -O /tmp/on
 # Not updated
 # wget -P -N https://transitfeeds.com/p/renfe/1016/latest/download -O /tmp/es-catelonia-all.zip
 
+./node_modules/.bin/gtfsmerge --remove-route-types=0,1,3 /tmp/nl-all.zip /tmp/oneway/nl-all.zip
 ./node_modules/.bin/gtfsmerge --transfer-distance=3.5 /tmp/fr-ter-rail.zip /tmp/fr-intercity-rail.zip /tmp/eurostar.zip /tmp/oneway/fr-all.zip
 ./node_modules/.bin/gtfsmerge --stop-prefix=oui_ /tmp/eu-oui-bus.zip /tmp/oneway/eu-oui-bus-modified.zip
 ./node_modules/.bin/gtfsmerge --stop-prefix=fi_ /tmp/fi-all.zip /tmp/oneway/fi-all.zip
-./node_modules/.bin/gtfsmerge /tmp/oneway/*.zip ./data/output.zip
+./node_modules/.bin/gtfsmerge --remove-route-types=1501,0,1,400,401,402,403,404 /tmp/oneway/*.zip ./data/output.zip

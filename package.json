@@ -46,7 +46,7 @@
     "autobind-decorator": "^2.4.0",
     "cheap-ruler": "^2.5.1",
     "csv-parse": "^4.4.3",
-    "gtfsmerge": "^2.0.0",
+    "gtfsmerge": "^2.1.0",
     "koa": "^2.7.0",
     "koa-compress": "^3.0.0",
     "pino": "^5.12.6",
