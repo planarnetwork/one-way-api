@@ -25,7 +25,6 @@ wget -P -N http://gtfs.ovapi.nl/nl/gtfs-nl.zip -O /tmp/nl-all.zip
 # DB, lots of data but only covers a small area?
 # wget -P -N https://data.opendatasoft.com/explore/dataset/de@navitia/files/400d7da94eaacb5e52c612f8ac28e420/download/ -O /tmp/de-rail.zip
 
-
 # No connecting ferries
 # wget -P -N https://transitfeeds.com/p/irish-rail/1046/latest/download -O /tmp/ie-intercity-rail.zip
 
