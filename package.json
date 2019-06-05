@@ -51,7 +51,7 @@
     "koa-compress": "^3.0.0",
     "pino": "^5.12.6",
     "pino-pretty": "^2.6.1",
-    "raptor-journey-planner": "^2.0.5",
+    "raptor-journey-planner": "^2.0.6",
     "unzipper": "^0.9.15"
   }
 }
