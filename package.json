@@ -45,7 +45,7 @@
     "@koa/cors": "^3.0.0",
     "autobind-decorator": "^2.4.0",
     "cheap-ruler": "^2.5.1",
-    "csv-parse": "^4.4.3",
+    "csv-parse": "^4.4.6",
     "gtfsmerge": "^2.1.0",
     "koa": "^2.7.0",
     "koa-compress": "^3.0.0",
