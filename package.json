@@ -42,7 +42,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "@koa/cors": "^3.0.0",
+    "@koa/cors": "^5.0.0",
     "autobind-decorator": "^2.4.0",
     "cheap-ruler": "^2.5.1",
     "csv-parse": "^4.4.6",
